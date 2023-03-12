@@ -1,18 +1,32 @@
 import './styles.css';
 
 import ResultCard from 'components/ResultCard';
+import { useState } from 'react';
+
+type FormData = {
+  cep: string;
+  test: string;
+};
 
 const CepSearch = () => {
+  const [formData, setFormData] = useState<FormData>({
+    cep: '',
+    test: ''
+  });
 
   // Evento ao alterar o form
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("Mudou para: " + event.target.value);
-  }
+   const name = event.target.name;
+   const value = event.target.value;
+
+   setFormData( { ...formData, [name]:value })
+
+  };
 
   // Evento ao enviar o form
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log("Clicou o botão");
+    console.log(formData);
   }
 
   return (
@@ -23,8 +37,18 @@ const CepSearch = () => {
           <div className="form-container">
             <input
               type="text"
+              name="cep"
+              value={formData.cep}
               className="search-input"
               placeholder="CEP (somente números)"
+              onChange={handleChange}
+            />
+            <input
+              type="text"
+              name="test"
+              value={formData.test}
+              className="search-input"
+              placeholder="Test"
               onChange={handleChange}
             />
             <button type="submit" className="btn btn-primary search-button">
@@ -35,7 +59,6 @@ const CepSearch = () => {
 
         <ResultCard title="Logradouro" description="Lalala" />
         <ResultCard title="Número" description="234" />
-
       </div>
     </div>
   );
